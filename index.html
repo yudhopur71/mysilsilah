@@ -169,19 +169,6 @@
       background-color: #1b4332 !important;
       color: #ffffff !important;
     }
-    .btn-search-nav {
-      background-color: #e8f5e9;
-      color: #1b4332;
-      border: 1px solid #a3e635;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-    .btn-search-nav:hover {
-      background-color: #1b4332;
-      color: #ffffff;
-      border-color: #1b4332;
-      transform: translateY(-1px);
-    }
   </style>
 </head>
 <body>
@@ -210,7 +197,7 @@
         <label class="form-label small fw-semibold text-secondary">Username / Email</label>
         <div class="input-group">
           <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-          <input type="text" id="loginUsername" class="form-control" value="admin" placeholder="Masukkan username / email" onkeydown="if(event.key==='Enter') executeLogin()">
+          <input type="text" id="loginUsername" class="form-control" placeholder="Masukkan username / email" onkeydown="if(event.key==='Enter') executeLogin()">
         </div>
       </div>
 
@@ -218,29 +205,18 @@
         <label class="form-label small fw-semibold text-secondary">Password</label>
         <div class="input-group">
           <span class="input-group-text bg-light"><i class="bi bi-shield-lock"></i></span>
-          <input type="password" id="loginPassword" class="form-control" value="keluarga123" placeholder="Masukkan password" onkeydown="if(event.key==='Enter') executeLogin()">
+          <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan password" onkeydown="if(event.key==='Enter') executeLogin()">
         </div>
       </div>
 
-      <div class="d-flex justify-content-end mb-3">
+      <div class="d-flex justify-content-end mb-4">
         <a href="javascript:void(0)" class="small text-success text-decoration-none fw-semibold" onclick="openModalLupaPassword()">Lupa Password?</a>
       </div>
 
       <!-- Tombol Login Utama -->
-      <button type="button" id="btnLogin" class="btn btn-success w-100 py-2 fw-bold shadow-sm mb-3" onclick="executeLogin()">
+      <button type="button" id="btnLogin" class="btn btn-success w-100 py-2 fw-bold shadow-sm" onclick="executeLogin()">
         <i class="bi bi-box-arrow-in-right me-1"></i> Masuk ke Portal
       </button>
-
-      <!-- Tombol Masuk Cepat (Bypass Mode) -->
-      <button type="button" class="btn btn-outline-secondary btn-sm w-100 mb-3" style="font-size: 0.8rem;" onclick="executeBypassLogin()">
-        <i class="bi bi-lightning-charge"></i> Masuk Cepat (Bypass Mode)
-      </button>
-
-      <div class="bg-light p-3 rounded-3 border text-center small">
-        <div class="fw-bold text-secondary mb-1">Informasi Akun Default:</div>
-        <div>Admin: <strong class="text-dark">admin</strong> | Sandi: <strong class="text-dark">keluarga123</strong></div>
-        <div>Anggota: <strong class="text-dark">keluarga</strong> | Sandi: <strong class="text-dark">123456</strong></div>
-      </div>
     </div>
   </div>
 
@@ -271,15 +247,15 @@
     <!-- Sub-Navbar Navigation Pills -->
     <div class="bg-white border-bottom shadow-sm">
       <div class="container-fluid px-3 px-md-4 pt-3">
-        <ul class="nav nav-pills gap-2 pb-3 overflow-x-auto flex-nowrap align-items-center" id="familyTabs">
+        <ul class="nav nav-pills gap-2 pb-3 overflow-x-auto flex-nowrap" id="familyTabs">
           <li class="nav-item">
             <button class="nav-link active fw-semibold text-nowrap" onclick="switchView('silsilah', this)">
-              <i class="bi bi-people-fill me-1"></i> Silsilah & Kartu Anggota
+              <i class="bi bi-people-fill me-1"></i> Silsilah & Kartu
             </button>
           </li>
           <li class="nav-item">
             <button class="nav-link fw-semibold text-nowrap" onclick="switchView('tree', this)">
-              <i class="bi bi-diagram-2 me-1"></i> Bagan Pohon Turunan
+              <i class="bi bi-diagram-2 me-1"></i> Bagan Pohon
             </button>
           </li>
           <li class="nav-item">
@@ -289,7 +265,7 @@
           </li>
           <li class="nav-item">
             <button class="nav-link fw-semibold text-nowrap" onclick="switchView('kegiatan', this)">
-              <i class="bi bi-calendar-event me-1"></i> Arisan & Pengajian
+              <i class="bi bi-calendar-event me-1"></i> Arisan & Agenda
             </button>
           </li>
           <li class="nav-item">
@@ -304,13 +280,12 @@
           </li>
           <li class="nav-item">
             <button class="nav-link fw-semibold text-nowrap" onclick="switchView('chat', this)">
-              <i class="bi bi-chat-dots-fill me-1"></i> Obrolan Grup
+              <i class="bi bi-chat-dots-fill me-1"></i> Obrolan & Private
             </button>
           </li>
-
-          <!-- TOMBOL CARI SAUDARA DI SEBELAH KANAN OBROLAN GRUP -->
-          <li class="nav-item ms-md-1">
-            <button type="button" class="btn btn-sm btn-search-nav rounded-pill px-3 py-2 text-nowrap shadow-sm" onclick="openModalCariSaudara()">
+          <!-- Tombol Fitur Pencarian Saudara Lanjutan (Kota & Profesi) -->
+          <li class="nav-item">
+            <button class="nav-link fw-semibold text-nowrap btn-outline-success text-success border border-success border-opacity-25" data-bs-toggle="modal" data-bs-target="#modalCariSaudara">
               <i class="bi bi-search me-1"></i> Cari Saudara (Kota/Profesi)
             </button>
           </li>
@@ -536,7 +511,49 @@
   <datalist id="listAyah"></datalist>
   <datalist id="listPasangan"></datalist>
 
-  <!-- MODAL 1: KELOLA USER OLEH ADMIN -->
+  <!-- MODAL: PENCARIAN LANJUTAN SAUDARA (KOTA & PROFESI) -->
+  <div class="modal fade" id="modalCariSaudara" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 rounded-4 shadow">
+        <div class="modal-header bg-custom-header text-white">
+          <h5 class="modal-title fw-bold"><i class="bi bi-geo-alt-fill me-2"></i>Pencarian Saudara Berdasarkan Kota & Profesi</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="p-3 bg-light rounded-3 border mb-3">
+            <div class="row g-2">
+              <div class="col-md-5">
+                <label class="form-label small fw-semibold text-secondary"><i class="bi bi-pin-map text-danger me-1"></i>Kota Tempat Tinggal</label>
+                <input type="text" id="inputCariKota" class="form-control form-control-sm" placeholder="Contoh: Solo, Semarang, Depok..." onkeydown="if(event.key==='Enter') executeAdvancedSearch()">
+              </div>
+              <div class="col-md-5">
+                <label class="form-label small fw-semibold text-secondary"><i class="bi bi-briefcase text-primary me-1"></i>Profesi / Pekerjaan / Bisnis</label>
+                <input type="text" id="inputCariProfesi" class="form-control form-control-sm" placeholder="Contoh: Guru, Dokter, Bisnis, Desain..." onkeydown="if(event.key==='Enter') executeAdvancedSearch()">
+              </div>
+              <div class="col-md-2 d-flex align-items-end gap-1">
+                <button type="button" class="btn btn-success btn-sm w-100 fw-bold" onclick="executeAdvancedSearch()">
+                  <i class="bi bi-search"></i> Cari
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="resetAdvancedSearch()" title="Reset Pencarian">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="small text-muted" id="searchResultCount">Hasil Pencarian: -</span>
+          </div>
+          <div class="row g-3" id="searchResultContainer" style="max-height: 400px; overflow-y: auto;">
+            <div class="col-12 text-center text-muted py-4 small">
+              Silakan ketik nama kota dan/atau profesi di atas lalu klik tombol <b>Cari</b>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 1: KELOLA USER OLEH ADMIN (PENDAFTARAN & AUTO PASSWORD) -->
   <div class="modal fade" id="modalUserMgmt" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 rounded-4 shadow">
@@ -598,7 +615,7 @@
     </div>
   </div>
 
-  <!-- MODAL 2: LUPA PASSWORD -->
+  <!-- MODAL 2: LUPA PASSWORD (RESET KATA SANDI VIA EMAIL) -->
   <div class="modal fade" id="modalLupaPassword" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 rounded-4 shadow">
@@ -1030,105 +1047,14 @@
     </div>
   </div>
 
-  <!-- MODAL 12: PENCARIAN LANJUTAN KOTA & PROFESI -->
-  <div class="modal fade" id="modalCariSaudara" tabindex="-1" aria-labelledby="modalCariSaudaraLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <div class="modal-content border-0 rounded-4 shadow">
-        <div class="modal-header bg-custom-header text-white">
-          <h5 class="modal-title fw-bold" id="modalCariSaudaraLabel">
-            <i class="bi bi-geo-alt-fill me-1 text-danger"></i>
-            <i class="bi bi-briefcase-fill me-2 text-warning"></i>
-            Cari Saudara Berdasarkan Kota & Profesi
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-
-        <div class="modal-body p-4" style="background-color: #f8faf9;">
-          <div class="card border bg-white rounded-3 p-3 mb-3 shadow-sm">
-            <div class="row g-2">
-              <div class="col-md-5">
-                <label class="form-label text-muted small fw-bold mb-1">KOTA / TEMPAT TINGGAL</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-light text-danger"><i class="bi bi-geo-alt-fill"></i></span>
-                  <input type="text" id="inputCariKota" class="form-control" placeholder="Contoh: Solo, Depok, Semarang..." onkeydown="if(event.key==='Enter') eksekusiCariSaudara()">
-                </div>
-              </div>
-
-              <div class="col-md-5">
-                <label class="form-label text-muted small fw-bold mb-1">PROFESI / PEKERJAAN</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-light text-primary"><i class="bi bi-briefcase-fill"></i></span>
-                  <input type="text" id="inputCariProfesi" class="form-control" placeholder="Contoh: Konsultan, Guru, Wiraswasta..." onkeydown="if(event.key==='Enter') eksekusiCariSaudara()">
-                </div>
-              </div>
-
-              <div class="col-md-2 d-flex align-items-end gap-1">
-                <button type="button" class="btn btn-success w-100 fw-bold shadow-sm" style="height: 38px;" onclick="eksekusiCariSaudara()">
-                  <i class="bi bi-search"></i> Cari
-                </button>
-                <button type="button" class="btn btn-outline-secondary" style="height: 38px;" title="Reset Form" onclick="resetFormPencarian()">
-                  <i class="bi bi-arrow-counterclockwise"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div id="loadingCariSaudara" style="display: none;" class="text-center py-4 text-muted">
-            <div class="spinner-border spinner-border-sm text-success me-2" role="status"></div>
-            <span>Menelusuri database silsilah keluarga...</span>
-          </div>
-
-          <div id="jumlahHasilCari" class="small text-muted mb-2 px-1 fw-semibold" style="display: none;"></div>
-
-          <div id="hasilPencarianSaudara" class="row g-3">
-            <div class="col-12 text-center text-muted py-4">
-              <i class="bi bi-search fs-2 d-block mb-2 text-secondary opacity-50"></i>
-              <em>Masukkan nama kota domisili atau profesi, lalu klik <strong>Cari</strong>.</em>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer bg-white border-0 py-2">
-          <button type="button" class="btn btn-sm btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Tutup</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // =========================================================================
-    // KONFIGURASI JALUR BACKEND GOOGLE APPS SCRIPT REST API
-    // =========================================================================
-    var SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbzuMslMeZS0CBafQWDnTGWdeNpLzgK5g4i1kST8rYOpcZ-eaXYyqutp3hR9ke7SWKEM/exec";
+    // URL BACKEND GOOGLE APPS SCRIPT LIVE API
+    const API_URL = "https://script.google.com/macros/s/AKfycbzuMslMeZS0CBafQWDnTGWdeNpLzgK5g4i1kST8rYOpcZ-eaXYyqutp3hR9ke7SWKEM/exec";
 
-    // Fungsi Pengiriman API Universal (Bebas Hambatan CORS)
-    function callBackendPost(action, payloadData) {
-      return fetch(SCRIPT_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({ action: action, data: payloadData })
-      }).then(function(res) {
-        return res.json();
-      });
-    }
-
-    function callBackendGet(actionParam) {
-      return fetch(SCRIPT_API_URL + "?action=" + encodeURIComponent(actionParam))
-        .then(function(res) {
-          return res.json();
-        });
-    }
-
-    // DATABASE FALLBACK / INITIAL CACHE LOKAL
-    var db = {
-      users: [
-        { id: "USR-001", username: "admin", password: "keluarga123", nama: "Bapak Yudho Purwoko", email: "yudho@keluarga.com", role: "Admin" },
-        { id: "USR-002", username: "keluarga", password: "123456", nama: "Anggota Keluarga", email: "anggota@keluarga.com", role: "Anggota" }
-      ],
+    let db = {
+      users: [],
       anggota: [],
       statusFeed: [],
       komentarStatus: [],
@@ -1142,43 +1068,68 @@
       komunitas: []
     };
 
-    var currentUser = null;
-    var activeChatType = 'room';
-    var activeRoomId = 'ROOM-001';
-    var activePrivateUserId = null;
+    let currentUser = null;
+    let activeChatType = 'room';
+    let activeRoomId = 'ROOM-001';
+    let activePrivateUserId = null;
 
-    var memoryStorage = {};
+    const memoryStorage = {};
     function setItemSafe(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { memoryStorage[k] = v; } }
     function getItemSafe(k) { try { return sessionStorage.getItem(k) || memoryStorage[k] || null; } catch (e) { return memoryStorage[k] || null; } }
     function removeItemSafe(k) { try { sessionStorage.removeItem(k); } catch (e) { delete memoryStorage[k]; } }
 
     function showFeedback(msg, type) {
-      if (typeof Swal !== 'undefined') {
-        Swal.fire(type === 'error' ? 'Gagal' : 'Informasi', msg, type || 'info');
-      } else {
-        alert(msg);
-      }
+      alert(msg);
     }
 
     function startLoading(msg) {
-      var txt = document.getElementById('loadingText');
+      const txt = document.getElementById('loadingText');
       if (txt) txt.innerText = msg || 'Memuat Data...';
-      var ovr = document.getElementById('loadingOverlay');
+      const ovr = document.getElementById('loadingOverlay');
       if (ovr) ovr.style.display = 'flex';
-      var btn = document.getElementById('btnLogin');
+      const btn = document.getElementById('btnLogin');
       if (btn) btn.disabled = true;
     }
 
     function endLoading() {
-      var ovr = document.getElementById('loadingOverlay');
+      const ovr = document.getElementById('loadingOverlay');
       if (ovr) ovr.style.display = 'none';
-      var btn = document.getElementById('btnLogin');
+      const btn = document.getElementById('btnLogin');
       if (btn) btn.disabled = false;
+    }
+
+    async function callBackendPost(action, payload) {
+      try {
+        const bodyData = Object.assign({ action: action }, payload || {});
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(bodyData)
+        });
+        return await res.json();
+      } catch (err) {
+        return { status: "error", message: err.toString() };
+      }
+    }
+
+    async function callBackendGet(action, params) {
+      try {
+        let url = API_URL + "?action=" + encodeURIComponent(action);
+        if (params) {
+          for (const k in params) {
+            url += "&" + encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+          }
+        }
+        const res = await fetch(url);
+        return await res.json();
+      } catch (err) {
+        return { status: "error", message: err.toString() };
+      }
     }
 
     function previewUploadImage(inputEl, previewImgId) {
       if (inputEl.files && inputEl.files[0]) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function(e) {
           document.getElementById(previewImgId).src = e.target.result;
         };
@@ -1187,41 +1138,37 @@
     }
 
     function uploadImageAsync(fileInput) {
-      return new Promise(function(resolve, reject) {
+      return new Promise((resolve, reject) => {
         if (!fileInput || !fileInput.files || !fileInput.files[0]) {
           resolve(null);
           return;
         }
-        var file = fileInput.files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var base64Data = e.target.result;
-          callBackendPost("uploadDrive", {
-            base64: base64Data,
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          const base64Data = e.target.result;
+          const res = await callBackendPost("uploadFile", {
+            base64Data: base64Data,
             fileName: file.name,
             mimeType: file.type
-          }).then(function(res) {
-            if (res && res.status === 'success') resolve(res.fileUrl);
-            else resolve(base64Data);
-          }).catch(function() {
-            resolve(base64Data);
           });
+          if (res && res.status === 'success') {
+            resolve(res.fileUrl);
+          } else {
+            reject(res ? res.message : "Gagal upload gambar");
+          }
         };
-        reader.onerror = function(err) { reject(err); };
+        reader.onerror = err => reject(err);
         reader.readAsDataURL(file);
       });
     }
 
-    // =========================================================================
-    // AUTHENTICATION & LOGIN (TERHUBUNG KE REST API)
-    // =========================================================================
-    function executeLogin() {
-      var uInput = document.getElementById('loginUsername');
-      var pInput = document.getElementById('loginPassword');
-      var errBox = document.getElementById('loginErrorAlert');
-      if (errBox) { errBox.style.display = 'none'; }
-      var u = uInput ? uInput.value.trim() : '';
-      var p = pInput ? pInput.value.trim() : '';
+    async function executeLogin() {
+      const u = document.getElementById('loginUsername').value.trim();
+      const p = document.getElementById('loginPassword').value.trim();
+      const errBox = document.getElementById('loginErrorAlert');
+      if (errBox) errBox.style.display = 'none';
+
       if (!u || !p) {
         if (errBox) {
           errBox.innerText = 'Username dan password wajib diisi!';
@@ -1229,35 +1176,19 @@
         }
         return;
       }
+
       startLoading('Memverifikasi akun...');
+      const res = await callBackendPost("loginUser", { username: u, password: p });
+      endLoading();
 
-      callBackendPost("login", { username: u, password: p })
-        .then(function(res) {
-          endLoading();
-          if (res && res.status === 'success') {
-            onLoginSuccess(res.user);
-          } else {
-            var msg = (res && res.message) ? res.message : 'Kombinasi akun salah!';
-            if (errBox) {
-              errBox.innerText = msg;
-              errBox.style.display = 'block';
-            }
-          }
-        })
-        .catch(function(err) {
-          endLoading();
-          // Fallback bypass jika offline / simulasi
-          executeBypassLogin();
-        });
-    }
-
-    function executeBypassLogin() {
-      var uInput = document.getElementById('loginUsername');
-      var u = (uInput && uInput.value ? uInput.value : 'admin').toLowerCase().trim();
-      var match = (typeof db !== 'undefined' && db.users && db.users.length) 
-        ? (db.users.find(function(x) { return (x.username || '').toLowerCase() === u; }) || db.users[0])
-        : { id: 'USR-001', username: 'admin', role: 'Admin', nama: 'Bapak Yudho Purwoko' };
-      onLoginSuccess(match);
+      if (res && res.status === 'success') {
+        onLoginSuccess(res.user);
+      } else {
+        if (errBox) {
+          errBox.innerText = (res && res.message) ? res.message : 'Kombinasi akun salah!';
+          errBox.style.display = 'block';
+        }
+      }
     }
 
     function onLoginSuccess(user) {
@@ -1286,29 +1217,17 @@
       document.getElementById('loginPassword').value = '';
     }
 
-    window.executeLogin = executeLogin;
-    window.executeBypassLogin = executeBypassLogin;
-    window.onLoginSuccess = onLoginSuccess;
-    window.logoutUser = logoutUser;
-
-    function loadData() {
+    async function loadData() {
       startLoading('Sinkronisasi data portal keluarga...');
-
-      callBackendGet("getAllData")
-        .then(function(res) {
-          if (res && res.status === 'success') {
-            db = res;
-          }
-          populateDatalists();
-          renderUI();
-          endLoading();
-        })
-        .catch(function(err) {
-          console.warn("Menggunakan data lokal:", err);
-          populateDatalists();
-          renderUI();
-          endLoading();
-        });
+      const res = await callBackendGet("getAllData");
+      endLoading();
+      if (res && res.status === 'success') {
+        db = res;
+        populateDatalists();
+        renderUI();
+      } else {
+        console.error("Gagal sinkronisasi data:", res);
+      }
     }
 
     function renderUI() {
@@ -1322,37 +1241,99 @@
       renderActiveChat();
     }
 
-    // 1. MANAJEMEN USER OLEH ADMIN
+    function executeAdvancedSearch() {
+      const kota = (document.getElementById('inputCariKota').value || '').toLowerCase().trim();
+      const profesi = (document.getElementById('inputCariProfesi').value || '').toLowerCase().trim();
+      const container = document.getElementById('searchResultContainer');
+      const countLabel = document.getElementById('searchResultCount');
+
+      if (!kota && !profesi) {
+        return showFeedback('Masukkan minimal satu parameter pencarian (Kota atau Profesi)!', 'warning');
+      }
+
+      const hasil = (db.anggota || []).filter(m => {
+        const matchKota = !kota || 
+          (m.alamat_ringkas && m.alamat_ringkas.toLowerCase().includes(kota)) ||
+          (m.alamat_lengkap && m.alamat_lengkap.toLowerCase().includes(kota));
+        
+        const matchProfesi = !profesi ||
+          (m.pekerjaan && m.pekerjaan.toLowerCase().includes(profesi)) ||
+          (m.bisnis && m.bisnis.toLowerCase().includes(profesi));
+
+        return matchKota && matchProfesi;
+      });
+
+      countLabel.innerText = "Ditemukan: " + hasil.length + " sanak saudara";
+
+      if (!hasil.length) {
+        container.innerHTML = '<div class="col-12 text-center text-muted py-4 small">Tidak ditemukan anggota keluarga dengan kriteria kota "' + (kota || '-') + '" dan profesi "' + (profesi || '-') + '".</div>';
+        return;
+      }
+
+      container.innerHTML = hasil.map(m => {
+        const waBtn = (m.telepon && m.telepon !== '-') ? 
+          '<a href="https://wa.me/' + m.telepon.replace(/[^0-9]/g, '') + '" target="_blank" class="btn btn-xs btn-outline-success rounded-pill px-2 py-1 small"><i class="bi bi-whatsapp"></i> Hubungi</a>' : '';
+
+        return '<div class="col-md-6">' +
+          '<div class="card border rounded-3 p-3 h-100 shadow-sm">' +
+            '<div class="d-flex align-items-center gap-2 mb-2">' +
+              '<img src="' + (m.foto_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200') + '" class="rounded-circle border" style="width: 48px; height: 48px; object-fit: cover;">' +
+              '<div>' +
+                '<h6 class="fw-bold mb-0 text-dark">' + m.nama + '</h6>' +
+                '<span class="badge bg-success-subtle text-success rounded-pill small" style="font-size: 0.7rem;">Generasi ' + m.generasi + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="small text-secondary mb-1"><i class="bi bi-geo-alt-fill text-danger me-1"></i><strong>' + (m.alamat_ringkas || '-') + '</strong></div>' +
+            '<div class="small text-secondary mb-2"><i class="bi bi-briefcase-fill text-primary me-1"></i><strong>' + (m.pekerjaan || '-') + '</strong></div>' +
+            '<div class="d-flex justify-content-between align-items-center pt-2 border-top mt-auto">' +
+              '<small class="text-muted text-truncate" style="max-width: 60%;">' + (m.bisnis || '-') + '</small>' +
+              '<div class="d-flex gap-1">' +
+                waBtn +
+                '<button type="button" class="btn btn-xs btn-outline-primary rounded-pill px-2 py-1 small" onclick="showModalRiwayat(\'' + m.id + '\')"><i class="bi bi-info-circle"></i> Info</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function resetAdvancedSearch() {
+      document.getElementById('inputCariKota').value = '';
+      document.getElementById('inputCariProfesi').value = '';
+      document.getElementById('searchResultCount').innerText = 'Hasil Pencarian: -';
+      document.getElementById('searchResultContainer').innerHTML = '<div class="col-12 text-center text-muted py-4 small">Filter telah direset. Silakan lakukan pencarian baru.</div>';
+    }
+
     function openModalUserMgmt() {
       renderUserTable();
       new bootstrap.Modal(document.getElementById('modalUserMgmt')).show();
     }
 
     function renderUserTable() {
-      var tbody = document.getElementById('userTableBody');
+      const tbody = document.getElementById('userTableBody');
       if (!db.users) return;
-      tbody.innerHTML = db.users.map(function(u) {
-        return '<tr>' +
-          '<td><span class="badge bg-light text-dark border">' + u.id + '</span></td>' +
-          '<td class="fw-bold">' + u.nama + '</td>' +
-          '<td>' + (u.email || '-') + '</td>' +
-          '<td><code>' + u.username + '</code></td>' +
-          '<td><span class="badge ' + (u.role === 'Admin' ? 'bg-danger' : 'bg-success') + '">' + u.role + '</span></td>' +
-        '</tr>';
-      }).join('');
+      tbody.innerHTML = db.users.map(u => `
+        <tr>
+          <td><span class="badge bg-light text-dark border">${u.id}</span></td>
+          <td class="fw-bold">${u.nama}</td>
+          <td>${u.email || '-'}</td>
+          <td><code>${u.username}</code></td>
+          <td><span class="badge ${u.role === 'Admin' ? 'bg-danger' : 'bg-success'}">${u.role}</span></td>
+        </tr>
+      `).join('');
     }
 
     function generateAutoPassword() {
-      var chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#";
-      var pass = "";
-      for (var i = 0; i < 8; i++) {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#";
+      let pass = "";
+      for (let i = 0; i < 8; i++) {
         pass += chars.charAt(Math.floor(Math.random() * chars.length));
       }
       document.getElementById('newUserPass').value = pass;
     }
 
-    function submitRegisterUser() {
-      var data = {
+    async function submitRegisterUser() {
+      const data = {
         nama: document.getElementById('newUserName').value.trim(),
         email: document.getElementById('newUserEmail').value.trim(),
         username: document.getElementById('newUserUsername').value.trim(),
@@ -1365,64 +1346,51 @@
       }
 
       startLoading('Mendaftarkan akun baru...');
+      const res = await callBackendPost("registerUserByAdmin", data);
+      endLoading();
 
-      callBackendPost("registerUser", data)
-        .then(function(res) {
-          if (res && res.status === 'success') {
-            loadData();
-            showFeedback('User baru berhasil didaftarkan!', 'success');
-            document.getElementById('newUserName').value = '';
-            document.getElementById('newUserEmail').value = '';
-            document.getElementById('newUserUsername').value = '';
-            document.getElementById('newUserPass').value = '';
-          } else {
-            endLoading();
-            showFeedback(res.message, 'error');
-          }
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback('Kendala jaringan: ' + err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        loadData();
+        showFeedback('User baru berhasil didaftarkan!', 'success');
+        document.getElementById('newUserName').value = '';
+        document.getElementById('newUserEmail').value = '';
+        document.getElementById('newUserUsername').value = '';
+        document.getElementById('newUserPass').value = '';
+      } else {
+        showFeedback(res.message || 'Gagal mendaftarkan user', 'error');
+      }
     }
 
     function openModalLupaPassword() {
       new bootstrap.Modal(document.getElementById('modalLupaPassword')).show();
     }
 
-    function submitResetPassword() {
-      var email = document.getElementById('resetEmailInput').value.trim();
+    async function submitResetPassword() {
+      const email = document.getElementById('resetEmailInput').value.trim();
       if (!email) return showFeedback('Masukkan email Anda!', 'warning');
 
       startLoading('Memproses reset kata sandi...');
+      const res = await callBackendPost("requestResetPassword", { email: email });
+      endLoading();
 
-      callBackendPost("resetPassword", { email: email })
-        .then(function(res) {
-          endLoading();
-          if (res && res.status === 'success') {
-            bootstrap.Modal.getInstance(document.getElementById('modalLupaPassword')).hide();
-            showFeedback(res.message, 'success');
-          } else {
-            showFeedback(res.message, 'error');
-          }
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback('Kendala jaringan: ' + err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        bootstrap.Modal.getInstance(document.getElementById('modalLupaPassword')).hide();
+        showFeedback(res.message, 'success');
+      } else {
+        showFeedback(res.message || 'Gagal mereset kata sandi', 'error');
+      }
     }
 
-    // 2 & 3. CHAT ROOMS & PRIVATE CHAT
     function openModalCreateRoom() {
       new bootstrap.Modal(document.getElementById('modalCreateRoom')).show();
     }
 
-    function submitCreateRoom() {
-      var topic = document.getElementById('inRoomTopic').value.trim();
-      var desc = document.getElementById('inRoomDesc').value.trim();
+    async function submitCreateRoom() {
+      const topic = document.getElementById('inRoomTopic').value.trim();
+      const desc = document.getElementById('inRoomDesc').value.trim();
       if (!topic) return showFeedback('Nama topik room wajib diisi!', 'warning');
 
-      var data = {
+      const data = {
         nama_room: topic,
         deskripsi: desc,
         pembuat: currentUser ? currentUser.nama : "Keluarga"
@@ -1430,46 +1398,41 @@
 
       bootstrap.Modal.getInstance(document.getElementById('modalCreateRoom')).hide();
       startLoading('Membuat room chat...');
+      const res = await callBackendPost("createChatRoom", data);
+      endLoading();
 
-      callBackendPost("createChatRoom", data)
-        .then(function(res) {
-          activeChatType = 'room';
-          activeRoomId = res.id;
-          loadData();
-          showFeedback('Room chat topik baru berhasil dibuat!', 'success');
-          document.getElementById('inRoomTopic').value = '';
-          document.getElementById('inRoomDesc').value = '';
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        activeChatType = 'room';
+        activeRoomId = res.id;
+        loadData();
+        showFeedback('Room chat topik baru berhasil dibuat!', 'success');
+        document.getElementById('inRoomTopic').value = '';
+        document.getElementById('inRoomDesc').value = '';
+      } else {
+        showFeedback(res.message || 'Gagal membuat room chat', 'error');
+      }
     }
 
     function renderChatNav() {
-      var roomNav = document.getElementById('roomChatNav');
-      if (db.chatRooms && db.chatRooms.length) {
-        roomNav.innerHTML = db.chatRooms.map(function(r) {
-          var isActive = activeChatType === 'room' && activeRoomId === r.id;
-          return '<button type="button" class="btn btn-sm w-100 text-start d-flex justify-content-between align-items-center mb-1 rounded-3 ' + (isActive ? 'room-badge-active fw-bold' : 'btn-light') + '" onclick="selectRoomChat(\'' + r.id + '\')">' +
-            '<span><i class="bi bi-hash me-1"></i>' + r.nama_room + '</span>' +
-            '<small class="opacity-75" style="font-size: 0.68rem;">' + r.pembuat + '</small>' +
-          '</button>';
-        }).join('');
-      } else {
-        roomNav.innerHTML = '<div class="text-muted small p-2">Belum ada topik.</div>';
+      const roomNav = document.getElementById('roomChatNav');
+      if (db.chatRooms) {
+        roomNav.innerHTML = db.chatRooms.map(r => `
+          <button type="button" class="btn btn-sm w-100 text-start d-flex justify-content-between align-items-center mb-1 rounded-3 ${activeChatType === 'room' && activeRoomId === r.id ? 'room-badge-active fw-bold' : 'btn-light'}" onclick="selectRoomChat('${r.id}')">
+            <span><i class="bi bi-hash me-1"></i>${r.nama_room}</span>
+            <small class="opacity-75" style="font-size: 0.68rem;">${r.pembuat}</small>
+          </button>
+        `).join('');
       }
 
-      var privNav = document.getElementById('privateChatNav');
-      if (db.users && db.users.length) {
-        var otherUsers = db.users.filter(function(u) { return currentUser && u.id !== currentUser.id; });
-        privNav.innerHTML = otherUsers.map(function(u) {
-          var isActive = activeChatType === 'private' && activePrivateUserId === u.id;
-          return '<button type="button" class="btn btn-sm w-100 text-start d-flex justify-content-between align-items-center mb-1 rounded-3 ' + (isActive ? 'btn-primary text-white fw-bold' : 'btn-light') + '" onclick="selectPrivateChat(\'' + u.id + '\')">' +
-            '<span><i class="bi bi-person-fill me-1"></i>' + u.nama + '</span>' +
-            '<span class="badge ' + (u.role === 'Admin' ? 'bg-danger' : 'bg-secondary') + ' rounded-pill" style="font-size: 0.65rem;">' + u.role + '</span>' +
-          '</button>';
-        }).join('');
+      const privNav = document.getElementById('privateChatNav');
+      if (db.users) {
+        const otherUsers = db.users.filter(u => currentUser && u.id !== currentUser.id);
+        privNav.innerHTML = otherUsers.map(u => `
+          <button type="button" class="btn btn-sm w-100 text-start d-flex justify-content-between align-items-center mb-1 rounded-3 ${activeChatType === 'private' && activePrivateUserId === u.id ? 'btn-primary text-white fw-bold' : 'btn-light'}" onclick="selectPrivateChat('${u.id}')">
+            <span><i class="bi bi-person-fill me-1"></i>${u.nama}</span>
+            <span class="badge ${u.role === 'Admin' ? 'bg-danger' : 'bg-secondary'} rounded-pill" style="font-size: 0.65rem;">${u.role}</span>
+          </button>
+        `).join('');
       }
     }
 
@@ -1488,113 +1451,110 @@
     }
 
     function renderActiveChat() {
-      var box = document.getElementById('chatMessages');
+      const box = document.getElementById('chatMessages');
 
       if (activeChatType === 'room') {
-        var room = (db.chatRooms || []).find(function(r) { return r.id === activeRoomId; }) || { nama_room: "Umum", deskripsi: "Ruang silaturahmi" };
+        const room = (db.chatRooms || []).find(r => r.id === activeRoomId) || { nama_room: "Umum", deskripsi: "Ruang silaturahmi" };
         document.getElementById('chatActiveHeaderTitle').innerText = "Room: " + room.nama_room;
         document.getElementById('chatActiveHeaderSubtitle').innerText = room.deskripsi;
         document.getElementById('chatActiveTypeBadge').className = "badge bg-light text-success fw-bold";
         document.getElementById('chatActiveTypeBadge').innerText = "Room Terbuka";
 
-        var msgs = (db.grupChat || []).filter(function(c) { return c.id_room === activeRoomId; });
+        const msgs = (db.grupChat || []).filter(c => c.id_room === activeRoomId);
         if (!msgs.length) {
           box.innerHTML = '<div class="text-center text-muted py-5 small">Belum ada obrolan di topik ini. Jadilah yang pertama menyapa!</div>';
           return;
         }
 
-        box.innerHTML = msgs.map(function(c) {
-          var isMe = currentUser && c.nama_pengirim === currentUser.nama;
-          return '<div class="chat-bubble ' + (isMe ? 'chat-right' : 'chat-left') + '">' +
-            '<div class="fw-bold small text-success">' + c.nama_pengirim + '</div>' +
-            '<div>' + c.pesan + '</div>' +
-            '<div class="text-end text-muted" style="font-size: 0.65rem;">' + c.waktu + '</div>' +
-          '</div>';
+        box.innerHTML = msgs.map(c => {
+          const isMe = currentUser && c.nama_pengirim === currentUser.nama;
+          return `
+            <div class="chat-bubble ${isMe ? 'chat-right' : 'chat-left'}">
+              <div class="fw-bold small text-success">${c.nama_pengirim}</div>
+              <div>${c.pesan}</div>
+              <div class="text-end text-muted" style="font-size: 0.65rem;">${c.waktu}</div>
+            </div>
+          `;
         }).join('');
       } else {
-        var targetUser = (db.users || []).find(function(u) { return u.id === activePrivateUserId; }) || { nama: "Anggota" };
-        document.getElementById('chatActiveHeaderTitle').innerHTML = '<i class="bi bi-lock-fill me-1"></i>Chat Pribadi: ' + targetUser.nama;
+        const targetUser = (db.users || []).find(u => u.id === activePrivateUserId) || { nama: "Anggota" };
+        document.getElementById('chatActiveHeaderTitle').innerHTML = `<i class="bi bi-lock-fill me-1"></i>Chat Pribadi: ${targetUser.nama}`;
         document.getElementById('chatActiveHeaderSubtitle').innerText = "Hanya Anda dan " + targetUser.nama + " yang dapat melihat percakapan ini";
         document.getElementById('chatActiveTypeBadge').className = "badge bg-warning text-dark fw-bold";
         document.getElementById('chatActiveTypeBadge').innerText = "Private Chat";
 
-        var msgs = (db.privateChat || []).filter(function(c) {
-          return currentUser && ((c.id_pengirim === currentUser.id && c.id_penerima === activePrivateUserId) ||
-          (c.id_pengirim === activePrivateUserId && c.id_penerima === currentUser.id));
-        });
+        const msgs = (db.privateChat || []).filter(c => 
+          currentUser && ((c.id_pengirim === currentUser.id && c.id_penerima === activePrivateUserId) ||
+          (c.id_pengirim === activePrivateUserId && c.id_penerima === currentUser.id))
+        );
 
         if (!msgs.length) {
-          box.innerHTML = '<div class="text-center text-muted py-5 small">Belum ada obrolan pribadi dengan ' + targetUser.nama + '. Ketik pesan di bawah untuk memulai!</div>';
+          box.innerHTML = `<div class="text-center text-muted py-5 small">Belum ada obrolan pribadi dengan ${targetUser.nama}. Ketik pesan di bawah untuk memulai!</div>`;
           return;
         }
 
-        box.innerHTML = msgs.map(function(c) {
-          var isMe = currentUser && c.id_pengirim === currentUser.id;
-          return '<div class="chat-bubble ' + (isMe ? 'chat-right' : 'chat-left') + '">' +
-            '<div class="fw-bold small ' + (isMe ? 'text-dark' : 'text-primary') + '">' + c.nama_pengirim + '</div>' +
-            '<div>' + c.pesan + '</div>' +
-            '<div class="text-end text-muted" style="font-size: 0.65rem;">' + c.waktu + '</div>' +
-          '</div>';
+        box.innerHTML = msgs.map(c => {
+          const isMe = currentUser && c.id_pengirim === currentUser.id;
+          return `
+            <div class="chat-bubble ${isMe ? 'chat-right' : 'chat-left'}">
+              <div class="fw-bold small ${isMe ? 'text-dark' : 'text-primary'}">${c.nama_pengirim}</div>
+              <div>${c.pesan}</div>
+              <div class="text-end text-muted" style="font-size: 0.65rem;">${c.waktu}</div>
+            </div>
+          `;
         }).join('');
       }
 
       box.scrollTop = box.scrollHeight;
     }
 
-    function sendChatMessage() {
-      var input = document.getElementById('chatInput');
-      var val = input.value.trim();
+    async function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const val = input.value.trim();
       if (!val) return;
 
-      var timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       input.value = '';
 
       if (activeChatType === 'room') {
-        var data = {
+        const data = {
           id_room: activeRoomId,
           nama_pengirim: currentUser ? currentUser.nama : "Keluarga",
-          pesan: val
+          pesan: val,
+          waktu: timeNow
         };
-
-        data.waktu = timeNow;
-        if (!db.grupChat) db.grupChat = [];
         db.grupChat.push(data);
         renderActiveChat();
-
-        callBackendPost("saveRoomChat", data);
+        await callBackendPost("saveRoomChat", data);
       } else {
-        var targetUser = (db.users || []).find(function(u) { return u.id === activePrivateUserId; });
-        var dataPriv = {
+        const targetUser = (db.users || []).find(u => u.id === activePrivateUserId);
+        const data = {
           id_pengirim: currentUser ? currentUser.id : "USR-001",
           nama_pengirim: currentUser ? currentUser.nama : "Keluarga",
           id_penerima: activePrivateUserId,
           nama_penerima: targetUser ? targetUser.nama : "Penerima",
-          pesan: val
+          pesan: val,
+          waktu: timeNow
         };
-
-        dataPriv.waktu = timeNow;
-        if (!db.privateChat) db.privateChat = [];
-        db.privateChat.push(dataPriv);
+        db.privateChat.push(data);
         renderActiveChat();
-
-        callBackendPost("savePrivateChat", dataPriv);
+        await callBackendPost("savePrivateChat", data);
       }
     }
 
-    // 4. KOMUNITAS
     function openModalCreateKomunitas() {
       new bootstrap.Modal(document.getElementById('modalCreateKomunitas')).show();
     }
 
-    function submitCreateKomunitas() {
-      var nama = document.getElementById('inKomNama').value.trim();
-      var ketua = document.getElementById('inKomKetua').value.trim();
-      var deskripsi = document.getElementById('inKomDeskripsi').value.trim();
+    async function submitCreateKomunitas() {
+      const nama = document.getElementById('inKomNama').value.trim();
+      const ketua = document.getElementById('inKomKetua').value.trim();
+      const deskripsi = document.getElementById('inKomDeskripsi').value.trim();
 
       if (!nama || !ketua || !deskripsi) return showFeedback('Semua kolom wajib diisi!', 'warning');
 
-      var isAdmin = currentUser && currentUser.role === 'Admin';
-      var data = {
+      const isAdmin = currentUser && currentUser.role === 'Admin';
+      const data = {
         nama_komunitas: nama,
         ketua: ketua,
         deskripsi: deskripsi,
@@ -1604,130 +1564,146 @@
 
       bootstrap.Modal.getInstance(document.getElementById('modalCreateKomunitas')).hide();
       startLoading('Mengajukan komunitas baru...');
+      const res = await callBackendPost("createKomunitas", data);
+      endLoading();
 
-      callBackendPost("createKomunitas", data)
-        .then(function(res) {
-          loadData();
-          showFeedback(isAdmin ? 'Komunitas langsung aktif!' : 'Komunitas diajukan dan menunggu persetujuan Admin!', 'success');
-          document.getElementById('inKomNama').value = '';
-          document.getElementById('inKomKetua').value = '';
-          document.getElementById('inKomDeskripsi').value = '';
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        loadData();
+        showFeedback(isAdmin ? 'Komunitas langsung aktif!' : 'Komunitas diajukan dan menunggu persetujuan Admin!', 'success');
+        document.getElementById('inKomNama').value = '';
+        document.getElementById('inKomKetua').value = '';
+        document.getElementById('inKomDeskripsi').value = '';
+      } else {
+        showFeedback(res.message || 'Gagal mengajukan komunitas', 'error');
+      }
     }
 
     function renderKomunitas() {
-      var container = document.getElementById('komunitasGrid');
+      const container = document.getElementById('komunitasGrid');
       if (!db.komunitas) return;
 
-      var isAdmin = currentUser && currentUser.role === 'Admin';
-      var list = isAdmin ? db.komunitas : db.komunitas.filter(function(k) { return k.status === 'Disetujui'; });
+      const isAdmin = currentUser && currentUser.role === 'Admin';
+      const list = isAdmin ? db.komunitas : db.komunitas.filter(k => k.status === 'Disetujui');
 
       if (!list.length) {
         container.innerHTML = '<div class="col-12 text-center text-muted py-5">Belum ada komunitas yang disetujui.</div>';
         return;
       }
 
-      container.innerHTML = list.map(function(k) {
-        var actions = (isAdmin && k.status === 'Pending')
-          ? '<button class="btn btn-sm btn-success rounded-pill px-3" onclick="handleApproveKomunitas(\'' + k.id + '\', \'Disetujui\')"><i class="bi bi-check-lg"></i> Setujui</button>' +
-            '<button class="btn btn-sm btn-outline-danger rounded-pill px-2" onclick="handleApproveKomunitas(\'' + k.id + '\', \'Ditolak\')">Tolak</button>'
-          : '<button class="btn btn-outline-success btn-sm rounded-pill px-3" onclick="showFeedback(\'Anda telah masuk ke paguyuban komunitas ini!\', \'info\')">Ikut Bergabung</button>';
-
-        return '<div class="col-md-6">' +
-          '<div class="card border-0 shadow-sm rounded-4 p-4 h-100">' +
-            '<div class="d-flex justify-content-between align-items-start mb-2">' +
-              '<h5 class="fw-bold text-dark mb-1">' + k.nama_komunitas + '</h5>' +
-              '<div>' +
-                '<span class="badge ' + (k.status === 'Disetujui' ? 'bg-success' : 'bg-warning text-dark') + ' rounded-pill me-1">' + k.status + '</span>' +
-                '<span class="badge bg-light text-dark border">' + k.jumlah_anggota + ' Anggota</span>' +
-              '</div>' +
-            '</div>' +
-            '<p class="text-secondary small mb-3">' + k.deskripsi + '</p>' +
-            '<div class="d-flex justify-content-between align-items-center pt-2 border-top">' +
-              '<small class="text-muted">Koordinator: <strong>' + k.ketua + '</strong></small>' +
-              '<div class="d-flex gap-1">' + actions + '</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }).join('');
+      container.innerHTML = list.map(k => `
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="fw-bold text-dark mb-1">${k.nama_komunitas}</h5>
+              <div>
+                <span class="badge ${k.status === 'Disetujui' ? 'bg-success' : 'bg-warning text-dark'} rounded-pill me-1">${k.status}</span>
+                <span class="badge bg-light text-dark border">${k.jumlah_anggota} Anggota</span>
+              </div>
+            </div>
+            <p class="text-secondary small mb-3">${k.deskripsi}</p>
+            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+              <small class="text-muted">Koordinator: <strong>${k.ketua}</strong></small>
+              <div class="d-flex gap-1">
+                ${isAdmin && k.status === 'Pending' ? `
+                  <button class="btn btn-sm btn-success rounded-pill px-3" onclick="handleApproveKomunitas('${k.id}', 'Disetujui')">
+                    <i class="bi bi-check-lg"></i> Setujui
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger rounded-pill px-2" onclick="handleApproveKomunitas('${k.id}', 'Ditolak')">
+                    Tolak
+                  </button>
+                ` : `
+                  <button class="btn btn-outline-success btn-sm rounded-pill px-3" onclick="showFeedback('Anda telah masuk ke paguyuban komunitas ini!', 'info')">
+                    Ikut Bergabung
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
 
-    function handleApproveKomunitas(id, status) {
+    async function handleApproveKomunitas(id, status) {
       startLoading('Memperbarui status komunitas...');
-      callBackendPost("approveKomunitas", { id: id, status: status })
-        .then(function(res) {
-          loadData();
-          showFeedback('Status komunitas diperbarui!', 'success');
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      const res = await callBackendPost("approveKomunitas", { id: id, status: status });
+      endLoading();
+
+      if (res && res.status === 'success') {
+        loadData();
+        showFeedback('Status komunitas diperbarui!', 'success');
+      } else {
+        showFeedback(res.message || 'Gagal memperbarui status', 'error');
+      }
     }
 
-    // 5. GALERI & KOMENTAR
     function renderGaleri() {
-      var container = document.getElementById('galeriGrid');
+      const container = document.getElementById('galeriGrid');
       if (!db.galeri) return;
       if (!db.komentarGaleri) db.komentarGaleri = [];
 
-      container.innerHTML = db.galeri.map(function(g) {
-        var comments = db.komentarGaleri.filter(function(c) { return c.id_galeri === g.id; });
-        var isOwnerOrAdmin = currentUser && (currentUser.id === g.id_pengunggah || currentUser.role === 'Admin');
+      container.innerHTML = db.galeri.map(g => {
+        const comments = db.komentarGaleri.filter(c => c.id_galeri === g.id);
+        const isOwnerOrAdmin = currentUser && (currentUser.id === g.id_pengunggah || currentUser.role === 'Admin');
 
-        var commentsHtml = comments.map(function(c) {
-          var canDelete = isOwnerOrAdmin || (currentUser && currentUser.id === c.id_komentator);
-          return '<div class="comment-item d-flex justify-content-between align-items-start">' +
-            '<div class="w-100">' +
-              '<div class="d-flex justify-content-between align-items-center mb-1">' +
-                '<strong class="text-success small">' + c.nama_komentator + '</strong>' +
-                '<span class="text-muted" style="font-size: 0.68rem;">' + c.tanggal + '</span>' +
-              '</div>' +
-              '<div class="text-dark small">' + c.komentar + '</div>' +
-            '</div>' +
-            (canDelete ? '<button type="button" class="btn btn-xs text-danger ms-2 p-0" title="Hapus Komentar" onclick="deleteKomentarGaleriPrompt(\'' + c.id + '\')"><i class="bi bi-trash"></i></button>' : '') +
-          '</div>';
+        const commentsHtml = comments.map(c => {
+          const canDelete = isOwnerOrAdmin || (currentUser && currentUser.id === c.id_komentator);
+          return `
+            <div class="comment-item d-flex justify-content-between align-items-start">
+              <div class="w-100">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong class="text-success small">${c.nama_komentator}</strong>
+                  <span class="text-muted" style="font-size: 0.68rem;">${c.tanggal}</span>
+                </div>
+                <div class="text-dark small">${c.komentar}</div>
+              </div>
+              ${canDelete ? `
+                <button type="button" class="btn btn-xs text-danger ms-2 p-0" title="Hapus Komentar" onclick="deleteKomentarGaleriPrompt('${c.id}')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              ` : ''}
+            </div>
+          `;
         }).join('');
 
-        return '<div class="col-md-6 col-lg-4">' +
-          '<div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden d-flex flex-column justify-content-between">' +
-            '<div>' +
-              '<img src="' + g.foto_url + '" class="gallery-img" alt="' + g.judul + '">' +
-              '<div class="card-body p-3">' +
-                '<span class="badge bg-success-subtle text-success rounded-pill mb-1">' + g.kategori + '</span>' +
-                '<h6 class="fw-bold text-dark mb-1">' + g.judul + '</h6>' +
-                '<div class="text-muted small mb-3">Diunggah oleh: <strong>' + g.pengunggah + '</strong> &bull; ' + g.tanggal + '</div>' +
-                '<div class="border-top pt-2">' +
-                  '<span class="small fw-semibold text-secondary mb-2 d-block"><i class="bi bi-chat-left-dots me-1"></i>' + comments.length + ' Komentar Keluarga</span>' +
-                  '<div style="max-height: 140px; overflow-y: auto;">' +
-                    (commentsHtml || '<div class="text-muted small fst-italic">Belum ada komentar. Berikan ucapan!</div>') +
-                  '</div>' +
-                '</div>' +
-              '</div>' +
-            '</div>' +
-            '<div class="p-3 pt-0 border-0">' +
-              '<div class="input-group input-group-sm">' +
-                '<input type="text" id="input-kom-galeri-' + g.id + '" class="form-control rounded-start-pill" placeholder="Komentari foto ini..." onkeydown="if(event.key===\'Enter\') submitKomentarGaleri(\'' + g.id + '\')">' +
-                '<button class="btn btn-outline-success rounded-end-pill px-3" onclick="submitKomentarGaleri(\'' + g.id + '\')">' +
-                  '<i class="bi bi-send-fill"></i>' +
-                '</button>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
+        return `
+          <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden d-flex flex-column justify-content-between">
+              <div>
+                <img src="${g.foto_url}" class="gallery-img" alt="${g.judul}">
+                <div class="card-body p-3">
+                  <span class="badge bg-success-subtle text-success rounded-pill mb-1">${g.kategori}</span>
+                  <h6 class="fw-bold text-dark mb-1">${g.judul}</h6>
+                  <div class="text-muted small mb-3">Diunggah oleh: <strong>${g.pengunggah}</strong> &bull; ${g.tanggal}</div>
+
+                  <div class="border-top pt-2">
+                    <span class="small fw-semibold text-secondary mb-2 d-block"><i class="bi bi-chat-left-dots me-1"></i>${comments.length} Komentar Keluarga</span>
+                    <div style="max-height: 140px; overflow-y: auto;">
+                      ${commentsHtml || '<div class="text-muted small fst-italic">Belum ada komentar. Berikan ucapan!</div>'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-3 pt-0 border-0">
+                <div class="input-group input-group-sm">
+                  <input type="text" id="input-kom-galeri-${g.id}" class="form-control rounded-start-pill" placeholder="Komentari foto ini..." onkeydown="if(event.key==='Enter') submitKomentarGaleri('${g.id}')">
+                  <button class="btn btn-outline-success rounded-end-pill px-3" onclick="submitKomentarGaleri('${g.id}')">
+                    <i class="bi bi-send-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
       }).join('');
     }
 
-    function submitKomentarGaleri(idGaleri) {
-      var input = document.getElementById('input-kom-galeri-' + idGaleri);
-      var val = input.value.trim();
+    async function submitKomentarGaleri(idGaleri) {
+      const input = document.getElementById('input-kom-galeri-' + idGaleri);
+      const val = input.value.trim();
       if (!val) return;
 
-      var data = {
+      const data = {
         id_galeri: idGaleri,
         nama_komentator: currentUser ? currentUser.nama : "Keluarga",
         id_komentator: currentUser ? currentUser.id : "USR-001",
@@ -1735,43 +1711,38 @@
       };
 
       input.value = '';
-      var now = new Date().toISOString().replace('T', ' ').substring(0, 16);
-      data.id = "KMG-TMP";
+      const now = new Date().toISOString().replace('T', ' ').substring(0, 16);
       data.tanggal = now;
-      if (!db.komentarGaleri) db.komentarGaleri = [];
       db.komentarGaleri.push(data);
       renderGaleri();
 
-      callBackendPost("saveKomentarGaleri", data)
-        .then(function(res) {
-          if (res && res.status === 'success') loadData();
-        });
+      const res = await callBackendPost("saveKomentarGaleri", data);
+      if (res && res.status === 'success') loadData();
     }
 
-    function deleteKomentarGaleriPrompt(idKomentar) {
+    async function deleteKomentarGaleriPrompt(idKomentar) {
       if (confirm('Anda yakin ingin menghapus komentar ini dari foto Anda?')) {
         startLoading('Menghapus komentar...');
-        callBackendPost("deleteKomentarGaleri", { id: idKomentar })
-          .then(function(res) {
-            loadData();
-            showFeedback('Komentar berhasil dihapus!', 'success');
-          })
-          .catch(function(err) {
-            endLoading();
-            showFeedback(err.toString(), 'error');
-          });
+        const res = await callBackendPost("deleteKomentarGaleri", { idKomentar: idKomentar });
+        endLoading();
+
+        if (res && res.status === 'success') {
+          loadData();
+          showFeedback('Komentar berhasil dihapus!', 'success');
+        } else {
+          showFeedback(res.message || 'Gagal menghapus komentar', 'error');
+        }
       }
     }
 
-    // DROPDOWN & FORM SILSILAH DINAMIS
     function initDropdownAnakKe() {
-      var selects = ['inAnakKe', 'editAnakKe'];
-      selects.forEach(function(id) {
-        var el = document.getElementById(id);
+      const selects = ['inAnakKe', 'editAnakKe'];
+      selects.forEach(id => {
+        const el = document.getElementById(id);
         if (el) {
-          var opts = '<option value="">-- Pilih Urutan Anak (1 - 30) --</option>';
-          for (var i = 1; i <= 30; i++) {
-            opts += '<option value="' + i + '">Anak Ke-' + i + '</option>';
+          let opts = '<option value="">-- Pilih Urutan Anak (1 - 30) --</option>';
+          for (let i = 1; i <= 30; i++) {
+            opts += `<option value="${i}">Anak Ke-${i}</option>`;
           }
           el.innerHTML = opts;
         }
@@ -1779,8 +1750,8 @@
     }
 
     function handleGenderChange(prefix) {
-      var gender = document.getElementById(prefix + 'Gender').value;
-      var lbl = document.getElementById(prefix === 'in' ? 'lblInPasangan' : 'lblEditPasangan');
+      const gender = document.getElementById(prefix + 'Gender').value;
+      const lbl = document.getElementById(prefix === 'in' ? 'lblInPasangan' : 'lblEditPasangan');
       if (gender === 'L') {
         lbl.innerText = 'Istri Dari (Opsional)';
       } else {
@@ -1790,27 +1761,25 @@
     }
 
     function populateDatalists(prefix, genderVal) {
-      var dListAyah = document.getElementById('listAyah');
+      const dListAyah = document.getElementById('listAyah');
       if (dListAyah && db.anggota) {
-        var fathers = db.anggota.filter(function(m) { return m.gender === 'L'; });
-        dListAyah.innerHTML = fathers.map(function(f) { return '<option value="' + f.nama + '">'; }).join('');
+        const fathers = db.anggota.filter(m => m.gender === 'L');
+        dListAyah.innerHTML = fathers.map(f => `<option value="${f.nama}">`).join('');
       }
 
-      var dListPasangan = document.getElementById('listPasangan');
+      const dListPasangan = document.getElementById('listPasangan');
       if (dListPasangan && db.anggota) {
-        var curPrefix = prefix || 'in';
-        var curGender = genderVal || (document.getElementById(curPrefix + 'Gender') ? document.getElementById(curPrefix + 'Gender').value : 'L');
-        var targetGender = (curGender === 'L') ? 'P' : 'L';
-        var potentialSpouses = db.anggota.filter(function(m) { return m.gender === targetGender; });
-        dListPasangan.innerHTML = potentialSpouses.map(function(s) {
-          return '<option value="' + s.nama + '">' + s.nama + ' (Generasi ' + s.generasi + ')</option>';
-        }).join('');
+        const curPrefix = prefix || 'in';
+        const curGender = genderVal || (document.getElementById(curPrefix + 'Gender') ? document.getElementById(curPrefix + 'Gender').value : 'L');
+        const targetGender = (curGender === 'L') ? 'P' : 'L';
+        const potentialSpouses = db.anggota.filter(m => m.gender === targetGender);
+        dListPasangan.innerHTML = potentialSpouses.map(s => `<option value="${s.nama}">${s.nama} (Generasi ${s.generasi})</option>`).join('');
       }
     }
 
     function handleAyahInput(prefix) {
-      var val = document.getElementById(prefix + 'Ayah').value.trim();
-      var colAnakKe = document.getElementById(prefix === 'in' ? 'inColAnakKe' : 'editColAnakKe');
+      const val = document.getElementById(prefix + 'Ayah').value.trim();
+      const colAnakKe = document.getElementById(prefix === 'in' ? 'inColAnakKe' : 'editColAnakKe');
       if (val !== '') {
         colAnakKe.style.display = 'block';
       } else {
@@ -1820,17 +1789,17 @@
     }
 
     function renderSilsilah() {
-      var q = (document.getElementById('searchAnggota').value || '').toLowerCase();
-      var gen = document.getElementById('filterGenerasi').value;
-      var container = document.getElementById('silsilahGrid');
+      const q = (document.getElementById('searchAnggota').value || '').toLowerCase();
+      const gen = document.getElementById('filterGenerasi').value;
+      const container = document.getElementById('silsilahGrid');
       if (!db.anggota) return;
 
-      var filtered = db.anggota.filter(function(m) {
-        var matchQ = (m.nama || '').toLowerCase().includes(q) ||
+      const filtered = db.anggota.filter(m => {
+        const matchQ = (m.nama && m.nama.toLowerCase().includes(q)) ||
           (m.pekerjaan && m.pekerjaan.toLowerCase().includes(q)) ||
           (m.bisnis && m.bisnis.toLowerCase().includes(q)) ||
           (m.alamat_ringkas && m.alamat_ringkas.toLowerCase().includes(q));
-        var matchGen = gen ? String(m.generasi) === gen : true;
+        const matchGen = gen ? String(m.generasi) === gen : true;
         return matchQ && matchGen;
       });
 
@@ -1839,107 +1808,121 @@
         return;
       }
 
-      container.innerHTML = filtered.map(function(m) {
-        var fotoUrl = m.foto_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200';
-        var ayahInfo = (m.ayah && m.ayah !== '-') ? ('<div class="text-muted small" style="font-size: 0.78rem;"><i class="bi bi-person-heart text-success"></i> Anak dari: <strong>' + m.ayah + '</strong> ' + (m.anak_ke && m.anak_ke !== '-' ? '(Anak ke-' + m.anak_ke + ')' : '') + '</div>') : '';
-        var bisnisInfo = (m.bisnis && m.bisnis !== '-') ? ('<div class="small text-secondary mb-2"><i class="bi bi-shop me-1 text-warning"></i> Bisnis: <strong>' + m.bisnis + '</strong></div>') : '';
+      container.innerHTML = filtered.map(m => `
+        <div class="col-md-6 col-lg-4">
+          <div class="family-card p-3 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="avatar-container">
+                  <img src="${m.foto_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200'}" class="avatar-wrap">
+                  <button type="button" class="btn btn-sm btn-success btn-change-photo" title="Ganti Foto Profil" onclick="openModalGantiFoto('${m.id}')">
+                    <i class="bi bi-camera"></i>
+                  </button>
+                </div>
+                <div>
+                  <h6 class="fw-bold text-dark mb-0">${m.nama}</h6>
+                  <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small">Generasi ${m.generasi}</span>
+                  <div class="text-muted small">
+                    ${m.gender === 'L' ? 'Laki-laki' : 'Perempuan'} &bull; 
+                    ${m.gender === 'L' ? 'Istri:' : 'Suami:'} <strong>${m.pasangan || '-'}</strong>
+                  </div>
+                  ${m.ayah && m.ayah !== '-' ? `
+                  <div class="text-muted small" style="font-size: 0.78rem;">
+                    <i class="bi bi-person-heart text-success"></i> Anak dari: <strong>${m.ayah}</strong> ${m.anak_ke && m.anak_ke !== '-' ? `(Anak ke-${m.anak_ke})` : ''}
+                  </div>` : ''}
+                </div>
+              </div>
 
-        return '<div class="col-md-6 col-lg-4">' +
-          '<div class="family-card p-3 h-100 d-flex flex-column justify-content-between">' +
-            '<div>' +
-              '<div class="d-flex align-items-center gap-3 mb-3">' +
-                '<div class="avatar-container">' +
-                  '<img src="' + fotoUrl + '" class="avatar-wrap">' +
-                  '<button type="button" class="btn btn-sm btn-success btn-change-photo" title="Ganti Foto Profil" onclick="openModalGantiFoto(\'' + m.id + '\')">' +
-                    '<i class="bi bi-camera"></i>' +
-                  '</button>' +
-                '</div>' +
-                '<div>' +
-                  '<h6 class="fw-bold text-dark mb-0">' + m.nama + '</h6>' +
-                  '<span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small">Generasi ' + m.generasi + '</span>' +
-                  '<div class="text-muted small">' +
-                    (m.gender === 'L' ? 'Laki-laki' : 'Perempuan') + ' &bull; ' +
-                    (m.gender === 'L' ? 'Istri:' : 'Suami:') + ' <strong>' + (m.pasangan || '-') + '</strong>' +
-                  '</div>' +
-                  ayahInfo +
-                '</div>' +
-              '</div>' +
-              '<div class="small text-secondary mb-2"><i class="bi bi-calendar3 me-1 text-success"></i> Lahir: <strong>' + (m.tgl_lahir || '-') + '</strong></div>' +
-              '<div class="small text-secondary mb-2">' +
-                '<i class="bi bi-geo-alt me-1 text-danger"></i> Alamat: ' +
-                '<span class="badge bg-light text-dark border clickable-badge" onclick="showModalAlamat(\'' + encodeURIComponent(m.nama) + '\', \'' + encodeURIComponent(m.alamat_lengkap) + '\')">' +
-                  m.alamat_ringkas + ' <i class="bi bi-box-arrow-up-right ms-1"></i>' +
-                '</span>' +
-              '</div>' +
-              '<div class="small text-secondary mb-2"><i class="bi bi-briefcase me-1 text-primary"></i> Profesi: <strong>' + (m.pekerjaan || '-') + '</strong></div>' +
-              bisnisInfo +
-              '<div class="small text-secondary mb-3"><i class="bi bi-star me-1 text-warning"></i> Keistimewaan: <span class="fst-italic text-dark">' + (m.keistimewaan || '-') + '</span></div>' +
-            '</div>' +
-            '<div class="pt-2 border-top d-flex justify-content-between align-items-center">' +
-              '<span class="small text-muted text-truncate me-2" style="max-width: 50%;">' + m.riwayat_ringkas + '</span>' +
-              '<div class="d-flex gap-1">' +
-                '<button class="btn btn-outline-primary btn-sm rounded-pill px-2 py-1 small" title="Edit Anggota" onclick="openModalEditAnggota(\'' + m.id + '\')">' +
-                  '<i class="bi bi-pencil me-1"></i>Edit' +
-                '</button>' +
-                '<button class="btn btn-outline-success btn-sm rounded-pill px-2 py-1 small" onclick="showModalRiwayat(\'' + m.id + '\')">' +
-                  '<i class="bi bi-book me-1"></i>Riwayat' +
-                '</button>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }).join('');
+              <div class="small text-secondary mb-2">
+                <i class="bi bi-calendar3 me-1 text-success"></i> Lahir: <strong>${m.tgl_lahir || '-'}</strong>
+              </div>
+              <div class="small text-secondary mb-2">
+                <i class="bi bi-geo-alt me-1 text-danger"></i> Alamat: 
+                <span class="badge bg-light text-dark border clickable-badge" onclick="showModalAlamat('${encodeURIComponent(m.nama)}', '${encodeURIComponent(m.alamat_lengkap)}')">
+                  ${m.alamat_ringkas} <i class="bi bi-box-arrow-up-right ms-1"></i>
+                </span>
+              </div>
+              <div class="small text-secondary mb-2">
+                <i class="bi bi-briefcase me-1 text-primary"></i> Profesi: <strong>${m.pekerjaan || '-'}</strong>
+              </div>
+              ${m.bisnis && m.bisnis !== '-' ? `
+              <div class="small text-secondary mb-2">
+                <i class="bi bi-shop me-1 text-warning"></i> Bisnis: <strong>${m.bisnis}</strong>
+              </div>` : ''}
+              <div class="small text-secondary mb-3">
+                <i class="bi bi-star me-1 text-warning"></i> Keistimewaan: <span class="fst-italic text-dark">${m.keistimewaan || '-'}</span>
+              </div>
+            </div>
+
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted text-truncate me-2" style="max-width: 50%;">${m.riwayat_ringkas}</span>
+              <div class="d-flex gap-1">
+                <button class="btn btn-outline-primary btn-sm rounded-pill px-2 py-1 small" title="Edit Anggota" onclick="openModalEditAnggota('${m.id}')">
+                  <i class="bi bi-pencil me-1"></i>Edit
+                </button>
+                <button class="btn btn-outline-success btn-sm rounded-pill px-2 py-1 small" onclick="showModalRiwayat('${m.id}')">
+                  <i class="bi bi-book me-1"></i>Riwayat
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
 
     function renderTree() {
-      var container = document.getElementById('treeContainer');
+      const container = document.getElementById('treeContainer');
       if (!db.anggota) return;
 
-      var g1 = db.anggota.filter(function(x) { return String(x.generasi) === '1'; });
-      var g2 = db.anggota.filter(function(x) { return String(x.generasi) === '2'; });
-      var g3 = db.anggota.filter(function(x) { return String(x.generasi) === '3'; });
-      var g4 = db.anggota.filter(function(x) { return String(x.generasi) === '4'; });
+      const g1 = db.anggota.filter(x => String(x.generasi) === '1');
+      const g2 = db.anggota.filter(x => String(x.generasi) === '2');
+      const g3 = db.anggota.filter(x => String(x.generasi) === '3');
+      const g4 = db.anggota.filter(x => String(x.generasi) === '4');
 
       function buildNode(p, badgeClass, badgeLabel) {
-        var fotoUrl = p.foto_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200';
-        var ayahText = (p.ayah && p.ayah !== '-') ? ('<small class="text-secondary d-block" style="font-size: 0.72rem;">Anak dari ' + p.ayah + '</small>') : '';
-        return '<div class="tree-node">' +
-          '<span class="badge ' + badgeClass + ' mb-2">' + badgeLabel + '</span>' +
-          '<div class="tree-avatar-container">' +
-            '<img src="' + fotoUrl + '" class="tree-avatar">' +
-            '<button type="button" class="btn btn-sm btn-success btn-change-photo" title="Ganti Foto" onclick="openModalGantiFoto(\'' + p.id + '\')">' +
-              '<i class="bi bi-camera"></i>' +
-            '</button>' +
-          '</div>' +
-          '<div class="fw-bold text-dark fs-6">' + p.nama + '</div>' +
-          '<small class="text-muted d-block">' + (p.pasangan && p.pasangan !== '-' ? ((p.gender === 'L' ? 'Istri: ' : 'Suami: ') + p.pasangan) : p.pekerjaan) + '</small>' +
-          ayahText +
-          '<div class="mt-2 d-flex justify-content-center gap-2">' +
-            '<button class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill small" onclick="openModalEditAnggota(\'' + p.id + '\')"><i class="bi bi-pencil"></i> Edit</button>' +
-            '<button class="btn btn-xs btn-outline-success py-0 px-2 rounded-pill small" onclick="showModalRiwayat(\'' + p.id + '\')"><i class="bi bi-info-circle"></i> Info</button>' +
-          '</div>' +
-        '</div>';
+        return `
+          <div class="tree-node">
+            <span class="badge ${badgeClass} mb-2">${badgeLabel}</span>
+            <div class="tree-avatar-container">
+              <img src="${p.foto_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200'}" class="tree-avatar">
+              <button type="button" class="btn btn-sm btn-success btn-change-photo" title="Ganti Foto" onclick="openModalGantiFoto('${p.id}')">
+                <i class="bi bi-camera"></i>
+              </button>
+            </div>
+            <div class="fw-bold text-dark fs-6">${p.nama}</div>
+            <small class="text-muted d-block">${p.pasangan && p.pasangan !== '-' ? (p.gender === 'L' ? 'Istri: ' : 'Suami: ') + p.pasangan : p.pekerjaan}</small>
+            ${p.ayah && p.ayah !== '-' ? `<small class="text-secondary d-block" style="font-size: 0.72rem;">Anak dari ${p.ayah}</small>` : ''}
+            <div class="mt-2 d-flex justify-content-center gap-2">
+              <button class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill small" onclick="openModalEditAnggota('${p.id}')">
+                <i class="bi bi-pencil"></i> Edit
+              </button>
+              <button class="btn btn-xs btn-outline-success py-0 px-2 rounded-pill small" onclick="showModalRiwayat('${p.id}')">
+                <i class="bi bi-info-circle"></i> Info
+              </button>
+            </div>
+          </div>
+        `;
       }
 
-      var html = '<div class="d-flex flex-wrap justify-content-center gap-3">';
-      g1.forEach(function(p) { html += buildNode(p, 'bg-success', 'Generasi 1 (Sesepuh)'); });
+      let html = '<div class="d-flex flex-wrap justify-content-center gap-3">';
+      g1.forEach(p => { html += buildNode(p, 'bg-success', 'Generasi 1 (Sesepuh)'); });
       html += '</div>';
 
       if (g2.length) {
         html += '<div class="tree-line"></div><div class="d-flex flex-wrap justify-content-center gap-3">';
-        g2.forEach(function(c) { html += buildNode(c, 'bg-primary', 'Generasi 2 (Anak)'); });
+        g2.forEach(c => { html += buildNode(c, 'bg-primary', 'Generasi 2 (Anak)'); });
         html += '</div>';
       }
 
       if (g3.length) {
         html += '<div class="tree-line"></div><div class="d-flex flex-wrap justify-content-center gap-3">';
-        g3.forEach(function(g) { html += buildNode(g, 'bg-warning text-dark', 'Generasi 3 (Cucu)'); });
+        g3.forEach(g => { html += buildNode(g, 'bg-warning text-dark', 'Generasi 3 (Cucu)'); });
         html += '</div>';
       }
 
       if (g4.length) {
         html += '<div class="tree-line"></div><div class="d-flex flex-wrap justify-content-center gap-3">';
-        g4.forEach(function(d) { html += buildNode(d, 'bg-info text-dark', 'Generasi 4 (Cicit)'); });
+        g4.forEach(d => { html += buildNode(d, 'bg-info text-dark', 'Generasi 4 (Cicit)'); });
         html += '</div>';
       }
 
@@ -1947,89 +1930,91 @@
     }
 
     function renderFeed() {
-      var container = document.getElementById('feedList');
+      const container = document.getElementById('feedList');
       if (!db.statusFeed) return;
       if (!db.komentarStatus) db.komentarStatus = [];
 
-      container.innerHTML = db.statusFeed.map(function(f) {
-        var comments = db.komentarStatus.filter(function(c) { return c.id_feed === f.id; });
-        var commentsHtml = comments.map(function(c) {
-          return '<div class="comment-item">' +
-            '<div class="d-flex justify-content-between align-items-center mb-1">' +
-              '<strong class="text-success small">' + c.nama_komentator + '</strong>' +
-              '<span class="text-muted" style="font-size: 0.7rem;">' + c.tanggal + '</span>' +
-            '</div>' +
-            '<div class="text-dark small">' + c.komentar + '</div>' +
-          '</div>';
-        }).join('');
+      container.innerHTML = db.statusFeed.map(f => {
+        const comments = db.komentarStatus.filter(c => c.id_feed === f.id);
+        const commentsHtml = comments.map(c => `
+          <div class="comment-item">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <strong class="text-success small">${c.nama_komentator}</strong>
+              <span class="text-muted" style="font-size: 0.7rem;">${c.tanggal}</span>
+            </div>
+            <div class="text-dark small">${c.komentar}</div>
+          </div>
+        `).join('');
 
-        return '<div class="card border-0 shadow-sm rounded-4 p-3">' +
-          '<div class="d-flex justify-content-between align-items-center mb-2">' +
-            '<div class="d-flex align-items-center gap-2">' +
-              '<i class="bi bi-person-circle fs-3 text-secondary"></i>' +
-              '<div>' +
-                '<strong class="text-dark">' + f.nama_penulis + '</strong>' +
-                '<div class="text-muted" style="font-size: 0.75rem;">' + f.tanggal + '</div>' +
-              '</div>' +
-            '</div>' +
-            '<span class="badge ' + (f.kategori === 'Humor' ? 'bg-warning text-dark' : 'bg-success-subtle text-success') + ' rounded-pill px-3">' +
-              f.kategori +
-            '</span>' +
-          '</div>' +
-          '<p class="text-secondary mb-3" style="line-height: 1.6;">' + f.konten + '</p>' +
-          '<div class="d-flex justify-content-between align-items-center pt-2 border-top mb-3">' +
-            '<button class="btn btn-sm btn-light rounded-pill px-3" onclick="likeFeed(\'' + f.id + '\', this)">' +
-              '<i class="bi bi-heart-fill text-danger me-1"></i> <span>' + (f.suka_count || 0) + '</span> Suka' +
-            '</button>' +
-            '<span class="small text-muted"><i class="bi bi-chat-left-text me-1"></i>' + comments.length + ' Komentar</span>' +
-          '</div>' +
-          '<div class="mb-2" id="comments-' + f.id + '">' + commentsHtml + '</div>' +
-          '<div class="input-group input-group-sm">' +
-            '<input type="text" id="comment-input-' + f.id + '" class="form-control rounded-start-pill" placeholder="Tulis komentar..." onkeydown="if(event.key===\'Enter\') submitKomentar(\'' + f.id + '\')">' +
-            '<button class="btn btn-outline-success rounded-end-pill px-3" type="button" onclick="submitKomentar(\'' + f.id + '\')">' +
-              '<i class="bi bi-send-fill"></i> Kirim' +
-            '</button>' +
-          '</div>' +
-        '</div>';
+        return `
+          <div class="card border-0 shadow-sm rounded-4 p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-person-circle fs-3 text-secondary"></i>
+                <div>
+                  <strong class="text-dark">${f.nama_penulis}</strong>
+                  <div class="text-muted" style="font-size: 0.75rem;">${f.tanggal}</div>
+                </div>
+              </div>
+              <span class="badge ${f.kategori === 'Humor' ? 'bg-warning text-dark' : 'bg-success-subtle text-success'} rounded-pill px-3">
+                ${f.kategori}
+              </span>
+            </div>
+            <p class="text-secondary mb-3" style="line-height: 1.6;">${f.konten}</p>
+            <div class="d-flex justify-content-between align-items-center pt-2 border-top mb-3">
+              <button class="btn btn-sm btn-light rounded-pill px-3" onclick="likeFeed('${f.id}', this)">
+                <i class="bi bi-heart-fill text-danger me-1"></i> <span>${f.suka_count || 0}</span> Suka
+              </button>
+              <span class="small text-muted"><i class="bi bi-chat-left-text me-1"></i>${comments.length} Komentar</span>
+            </div>
+
+            <div class="mb-2" id="comments-${f.id}">
+              ${commentsHtml}
+            </div>
+
+            <div class="input-group input-group-sm">
+              <input type="text" id="comment-input-${f.id}" class="form-control rounded-start-pill" placeholder="Tulis komentar..." onkeydown="if(event.key==='Enter') submitKomentar('${f.id}')">
+              <button class="btn btn-outline-success rounded-end-pill px-3" type="button" onclick="submitKomentar('${f.id}')">
+                <i class="bi bi-send-fill"></i> Kirim
+              </button>
+            </div>
+          </div>
+        `;
       }).join('');
     }
 
     function likeFeed(feedId, btn) {
-      var countSpan = btn.querySelector('span');
+      const countSpan = btn.querySelector('span');
       countSpan.innerText = parseInt(countSpan.innerText) + 1;
-      var feed = db.statusFeed.find(function(x) { return x.id === feedId; });
+      const feed = db.statusFeed.find(x => x.id === feedId);
       if (feed) feed.suka_count = parseInt(countSpan.innerText);
     }
 
-    function submitKomentar(feedId) {
-      var input = document.getElementById('comment-input-' + feedId);
-      var text = input.value.trim();
+    async function submitKomentar(feedId) {
+      const input = document.getElementById('comment-input-' + feedId);
+      const text = input.value.trim();
       if (!text) return;
 
-      var commenter = currentUser ? currentUser.nama : "Anggota Keluarga";
-      var now = new Date().toISOString().replace('T', ' ').substring(0, 16);
+      const commenter = currentUser ? currentUser.nama : "Anggota Keluarga";
+      const now = new Date().toISOString().replace('T', ' ').substring(0, 16);
 
-      var data = {
+      const data = {
         id_feed: feedId,
         nama_komentator: commenter,
-        komentar: text
+        komentar: text,
+        tanggal: now
       };
 
       input.value = '';
-      data.id = "KMT-TMP";
-      data.tanggal = now;
-      if (!db.komentarStatus) db.komentarStatus = [];
       db.komentarStatus.push(data);
       renderFeed();
 
-      callBackendPost("saveKomentar", data)
-        .then(function(res) {
-          if (res && res.status === 'success') loadData();
-        });
+      const res = await callBackendPost("saveKomentar", data);
+      if (res && res.status === 'success') loadData();
     }
 
     function openModalGantiFoto(id) {
-      var m = db.anggota.find(function(x) { return x.id === id; });
+      const m = db.anggota.find(x => x.id === id);
       if (!m) return;
       document.getElementById('gantiFotoId').value = m.id;
       document.getElementById('gantiFotoNama').innerText = m.nama;
@@ -2040,14 +2025,14 @@
     }
 
     async function submitGantiFoto() {
-      var id = document.getElementById('gantiFotoId').value;
-      var fileInput = document.getElementById('fileGantiFoto');
-      var newUrl = document.getElementById('gantiFotoUrlInput').value.trim();
+      const id = document.getElementById('gantiFotoId').value;
+      const fileInput = document.getElementById('fileGantiFoto');
+      let newUrl = document.getElementById('gantiFotoUrlInput').value.trim();
 
       startLoading('Mengunggah & memperbarui foto profil...');
 
       try {
-        var uploadedUrl = await uploadImageAsync(fileInput);
+        const uploadedUrl = await uploadImageAsync(fileInput);
         if (uploadedUrl) newUrl = uploadedUrl;
       } catch (err) {
         endLoading();
@@ -2060,20 +2045,19 @@
       }
 
       bootstrap.Modal.getInstance(document.getElementById('modalGantiFoto')).hide();
+      const res = await callBackendPost("updateFotoProfil", { id: id, foto_url: newUrl });
+      endLoading();
 
-      callBackendPost("updateFotoProfil", { id: id, foto_url: newUrl })
-        .then(function(res) {
-          loadData();
-          showFeedback('Foto profil baru berhasil disimpan!', 'success');
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        loadData();
+        showFeedback('Foto profil baru berhasil disimpan!', 'success');
+      } else {
+        showFeedback(res.message || 'Gagal memperbarui foto', 'error');
+      }
     }
 
     function openModalEditAnggota(id) {
-      var m = db.anggota.find(function(x) { return x.id === id; });
+      const m = db.anggota.find(x => x.id === id);
       if (!m) return;
 
       document.getElementById('editId').value = m.id;
@@ -2105,19 +2089,19 @@
     }
 
     async function submitUpdateAnggota() {
-      var fileInput = document.getElementById('editFotoFile');
+      const fileInput = document.getElementById('editFotoFile');
       startLoading('Menyimpan perubahan profil dan foto...');
 
-      var photoUrl = document.getElementById('editFotoUrl').value;
+      let photoUrl = document.getElementById('editFotoUrl').value;
       try {
-        var uploadedUrl = await uploadImageAsync(fileInput);
+        const uploadedUrl = await uploadImageAsync(fileInput);
         if (uploadedUrl) photoUrl = uploadedUrl;
       } catch (err) {
         endLoading();
         return showFeedback(err, 'error');
       }
 
-      var form = {
+      const form = {
         id: document.getElementById('editId').value,
         nama: document.getElementById('editNama').value.trim(),
         gender: document.getElementById('editGender').value,
@@ -2138,32 +2122,31 @@
       };
 
       bootstrap.Modal.getInstance(document.getElementById('modalEditAnggota')).hide();
+      const res = await callBackendPost("updateAnggota", form);
+      endLoading();
 
-      callBackendPost("updateAnggota", form)
-        .then(function(res) {
-          loadData();
-          showFeedback('Perubahan anggota berhasil disimpan ke Spreadsheet!', 'success');
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        loadData();
+        showFeedback('Perubahan anggota berhasil disimpan ke Spreadsheet!', 'success');
+      } else {
+        showFeedback(res.message || 'Gagal menyimpan perubahan', 'error');
+      }
     }
 
     async function submitAnggota() {
-      var fileInput = document.getElementById('inFotoFile');
+      const fileInput = document.getElementById('inFotoFile');
       startLoading('Mengunggah foto & menyimpan anggota baru...');
 
-      var photoUrl = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200';
+      let photoUrl = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200';
       try {
-        var uploadedUrl = await uploadImageAsync(fileInput);
+        const uploadedUrl = await uploadImageAsync(fileInput);
         if (uploadedUrl) photoUrl = uploadedUrl;
       } catch (err) {
         endLoading();
         return showFeedback(err, 'error');
       }
 
-      var form = {
+      const form = {
         nama: document.getElementById('inNama').value.trim(),
         gender: document.getElementById('inGender').value,
         generasi: document.getElementById('inGenerasi').value,
@@ -2182,18 +2165,17 @@
       };
 
       bootstrap.Modal.getInstance(document.getElementById('modalAddAnggota')).hide();
+      const res = await callBackendPost("saveAnggota", form);
+      endLoading();
 
-      callBackendPost("saveAnggota", form)
-        .then(function(res) {
-          loadData();
-          showFeedback('Data anggota keluarga berhasil ditambahkan ke Spreadsheet!', 'success');
-          document.getElementById('formAddAnggota').reset();
-          document.getElementById('inColAnakKe').style.display = 'none';
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        loadData();
+        showFeedback('Data anggota keluarga berhasil ditambahkan ke Spreadsheet!', 'success');
+        document.getElementById('formAddAnggota').reset();
+        document.getElementById('inColAnakKe').style.display = 'none';
+      } else {
+        showFeedback(res.message || 'Gagal menyimpan anggota baru', 'error');
+      }
     }
 
     function showModalAlamat(nama, alamat) {
@@ -2203,72 +2185,69 @@
     }
 
     function showModalRiwayat(id) {
-      var m = db.anggota.find(function(x) { return x.id === id; });
+      const m = db.anggota.find(x => x.id === id);
       if (!m) return;
       document.getElementById('modalRiwayatNama').innerText = m.nama;
-      document.getElementById('modalRiwayatProfesi').innerText = m.pekerjaan + ' | Generasi Ke-' + m.generasi;
+      document.getElementById('modalRiwayatProfesi').innerText = `${m.pekerjaan} | Generasi Ke-${m.generasi}`;
       document.getElementById('modalRiwayatKeistimewaan').innerText = m.keistimewaan || '-';
       document.getElementById('modalRiwayatBisnis').innerText = m.bisnis || '-';
       document.getElementById('modalRiwayatIsi').innerText = m.riwayat_lengkap || m.riwayat_ringkas;
       new bootstrap.Modal(document.getElementById('modalRiwayat')).show();
     }
 
-    function submitFeed() {
-      var konten = document.getElementById('feedContent').value.trim();
-      var kategori = document.getElementById('feedCategory').value;
+    async function submitFeed() {
+      const konten = document.getElementById('feedContent').value.trim();
+      const kategori = document.getElementById('feedCategory').value;
       if (!konten) return showFeedback('Ketik isi status terlebih dahulu!', 'warning');
 
-      var data = {
+      const data = {
         nama_penulis: currentUser ? currentUser.nama : "Keluarga",
         konten: konten,
         kategori: kategori
       };
 
       startLoading('Menerbitkan status...');
+      const res = await callBackendPost("saveFeed", data);
+      endLoading();
 
-      callBackendPost("saveFeed", data)
-        .then(function(res) {
-          document.getElementById('feedContent').value = '';
-          loadData();
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        document.getElementById('feedContent').value = '';
+        loadData();
+      } else {
+        showFeedback(res.message || 'Gagal menerbitkan status', 'error');
+      }
     }
 
     function renderKegiatan() {
-      var container = document.getElementById('kegiatanList');
-      var select = document.getElementById('rsvpEventSelect');
+      const container = document.getElementById('kegiatanList');
+      const select = document.getElementById('rsvpEventSelect');
       if (!db.kegiatan) return;
 
-      select.innerHTML = db.kegiatan.map(function(k) {
-        return '<option value="' + k.id + '">' + k.nama_acara + ' (' + k.tanggal_waktu + ')</option>';
-      }).join('');
+      select.innerHTML = db.kegiatan.map(k => `<option value="${k.id}">${k.nama_acara} (${k.tanggal_waktu})</option>`).join('');
 
-      container.innerHTML = db.kegiatan.map(function(k) {
-        var biayaBadge = parseInt(k.biaya) > 0 
-          ? '<div class="text-end"><span class="badge bg-light text-dark border">Uang Kas / Arisan</span><div class="fw-bold text-success fs-6 mt-1">Rp ' + parseInt(k.biaya).toLocaleString('id-ID') + '</div></div>'
-          : '';
-
-        return '<div class="card border-0 shadow-sm rounded-4 p-3">' +
-          '<div class="d-flex justify-content-between align-items-start">' +
-            '<div>' +
-              '<span class="badge ' + (k.tipe === 'Arisan' ? 'bg-primary' : 'bg-success') + ' rounded-pill px-3 mb-2">' + k.tipe + '</span>' +
-              '<h5 class="fw-bold text-dark mb-1">' + k.nama_acara + '</h5>' +
-              '<div class="text-muted small mb-2"><i class="bi bi-clock me-1"></i> Waktu: <strong>' + k.tanggal_waktu + '</strong></div>' +
-              '<div class="text-secondary small mb-1"><i class="bi bi-geo-alt me-1 text-danger"></i> Lokasi: <strong>' + k.lokasi + '</strong></div>' +
-              '<div class="text-secondary small mb-2"><i class="bi bi-house me-1 text-primary"></i> Tuan Rumah: <strong>' + k.tuan_rumah + '</strong></div>' +
-              '<p class="text-secondary small mb-0">' + k.deskripsi + '</p>' +
-            '</div>' +
-            biayaBadge +
-          '</div>' +
-        '</div>';
-      }).join('');
+      container.innerHTML = db.kegiatan.map(k => `
+        <div class="card border-0 shadow-sm rounded-4 p-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <span class="badge ${k.tipe === 'Arisan' ? 'bg-primary' : 'bg-success'} rounded-pill px-3 mb-2">${k.tipe}</span>
+              <h5 class="fw-bold text-dark mb-1">${k.nama_acara}</h5>
+              <div class="text-muted small mb-2"><i class="bi bi-clock me-1"></i> Waktu: <strong>${k.tanggal_waktu}</strong></div>
+              <div class="text-secondary small mb-1"><i class="bi bi-geo-alt me-1 text-danger"></i> Lokasi: <strong>${k.lokasi}</strong></div>
+              <div class="text-secondary small mb-2"><i class="bi bi-house me-1 text-primary"></i> Tuan Rumah: <strong>${k.tuan_rumah}</strong></div>
+              <p class="text-secondary small mb-0">${k.deskripsi}</p>
+            </div>
+            ${parseInt(k.biaya) > 0 ? `
+            <div class="text-end">
+              <span class="badge bg-light text-dark border">Uang Kas / Arisan</span>
+              <div class="fw-bold text-success fs-6 mt-1">Rp ${parseInt(k.biaya).toLocaleString('id-ID')}</div>
+            </div>` : ''}
+          </div>
+        </div>
+      `).join('');
     }
 
-    function submitRSVP() {
-      var data = {
+    async function submitRSVP() {
+      const data = {
         id_kegiatan: document.getElementById('rsvpEventSelect').value,
         nama_peserta: document.getElementById('rsvpNama').value.trim() || (currentUser ? currentUser.nama : "Keluarga"),
         status_kehadiran: document.getElementById('rsvpStatus').value,
@@ -2279,44 +2258,42 @@
       if (!data.nama_peserta) return showFeedback('Nama peserta harus diisi!', 'warning');
 
       startLoading('Menyimpan konfirmasi kehadiran...');
+      const res = await callBackendPost("savePendaftaran", data);
+      endLoading();
 
-      callBackendPost("saveRSVP", data)
-        .then(function(res) {
-          endLoading();
-          showFeedback('Konfirmasi kehadiran berhasil dicatat di Spreadsheet!', 'success');
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        showFeedback('Konfirmasi kehadiran berhasil dicatat di Spreadsheet!', 'success');
+      } else {
+        showFeedback(res.message || 'Gagal menyimpan konfirmasi', 'error');
+      }
     }
 
     function spinArisan() {
-      var candidates = (db.anggota || []).map(function(a) { return a.nama; });
+      const candidates = (db.anggota || []).map(a => a.nama);
       if (!candidates.length) return;
-      var box = document.getElementById('arisanWinnerBox');
-      var counter = 0;
-      var interval = setInterval(function() {
-        var rand = candidates[Math.floor(Math.random() * candidates.length)];
+      const box = document.getElementById('arisanWinnerBox');
+      let counter = 0;
+      const interval = setInterval(() => {
+        const rand = candidates[Math.floor(Math.random() * candidates.length)];
         box.innerText = rand;
         counter++;
         if (counter > 20) {
           clearInterval(interval);
-          var finalWinner = candidates[Math.floor(Math.random() * candidates.length)];
-          box.innerHTML = '<span class="badge bg-warning text-dark mb-1">Selamat!</span><br>' + finalWinner;
-          showFeedback('Pemenang Arisan Periode Ini: ' + finalWinner, 'success');
+          const finalWinner = candidates[Math.floor(Math.random() * candidates.length)];
+          box.innerHTML = `<span class="badge bg-warning text-dark mb-1">Selamat!</span><br>${finalWinner}`;
+          showFeedback(`Pemenang Arisan Periode Ini: ${finalWinner}`, 'success');
         }
       }, 100);
     }
 
     async function submitGaleri() {
-      var fileInput = document.getElementById('inGaleriFile');
-      var photoUrl = document.getElementById('inGaleriUrl').value.trim();
+      const fileInput = document.getElementById('inGaleriFile');
+      let photoUrl = document.getElementById('inGaleriUrl').value.trim();
 
       startLoading('Mengunggah foto kenangan...');
 
       try {
-        var uploadedUrl = await uploadImageAsync(fileInput);
+        const uploadedUrl = await uploadImageAsync(fileInput);
         if (uploadedUrl) photoUrl = uploadedUrl;
       } catch (err) {
         endLoading();
@@ -2328,7 +2305,7 @@
         return showFeedback('Pilih file foto dari komputer atau masukkan link URL!', 'warning');
       }
 
-      var data = {
+      const data = {
         judul: document.getElementById('inGaleriJudul').value.trim(),
         kategori: document.getElementById('inGaleriKategori').value,
         foto_url: photoUrl,
@@ -2337,21 +2314,20 @@
       };
 
       bootstrap.Modal.getInstance(document.getElementById('modalAddGaleri')).hide();
+      const res = await callBackendPost("saveGaleri", data);
+      endLoading();
 
-      callBackendPost("saveGaleri", data)
-        .then(function(res) {
-          loadData();
-          showFeedback('Foto berhasil disimpan ke Spreadsheet!', 'success');
-          document.getElementById('formAddGaleri').reset();
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        showFeedback('Foto berhasil disimpan ke Spreadsheet!', 'success');
+        document.getElementById('formAddGaleri').reset();
+        loadData();
+      } else {
+        showFeedback(res.message || 'Gagal mengunggah foto', 'error');
+      }
     }
 
-    function submitKegiatan() {
-      var form = {
+    async function submitKegiatan() {
+      const form = {
         nama_acara: document.getElementById('inAcaraNama').value.trim(),
         tipe: document.getElementById('inAcaraTipe').value,
         tanggal_waktu: document.getElementById('inAcaraWaktu').value.trim(),
@@ -2363,165 +2339,37 @@
 
       bootstrap.Modal.getInstance(document.getElementById('modalAddKegiatan')).hide();
       startLoading('Menyimpan jadwal agenda...');
+      const res = await callBackendPost("saveKegiatan", form);
+      endLoading();
 
-      callBackendPost("saveKegiatan", form)
-        .then(function(res) {
-          loadData();
-          showFeedback('Jadwal berhasil ditambahkan!', 'success');
-          document.getElementById('formAddKegiatan').reset();
-        })
-        .catch(function(err) {
-          endLoading();
-          showFeedback(err.toString(), 'error');
-        });
+      if (res && res.status === 'success') {
+        showFeedback('Jadwal berhasil ditambahkan!', 'success');
+        document.getElementById('formAddKegiatan').reset();
+        loadData();
+      } else {
+        showFeedback(res.message || 'Gagal menyimpan agenda', 'error');
+      }
     }
 
     function switchView(viewName, btn) {
-      var views = ['silsilah', 'tree', 'feed', 'kegiatan', 'galeri', 'komunitas', 'chat'];
-      views.forEach(function(v) {
-        var el = document.getElementById('view-' + v);
+      ['silsilah', 'tree', 'feed', 'kegiatan', 'galeri', 'komunitas', 'chat'].forEach(v => {
+        const el = document.getElementById('view-' + v);
         if (el) el.style.display = (v === viewName) ? 'block' : 'none';
       });
-      document.querySelectorAll('#familyTabs .nav-link').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('#familyTabs .nav-link').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
     }
 
-    // =========================================================================
-    // FITUR 6: PENCARIAN LANJUTAN (KOTA TEMPAT TINGGAL & PROFESI)
-    // =========================================================================
-    function openModalCariSaudara() {
-      new bootstrap.Modal(document.getElementById('modalCariSaudara')).show();
-    }
-
-    function resetFormPencarian() {
-      document.getElementById('inputCariKota').value = '';
-      document.getElementById('inputCariProfesi').value = '';
-      document.getElementById('jumlahHasilCari').style.display = 'none';
-      document.getElementById('hasilPencarianSaudara').innerHTML = 
-        '<div class="col-12 text-center text-muted py-4">' +
-          '<i class="bi bi-search fs-2 d-block mb-2 text-secondary opacity-50"></i>' +
-          '<em>Masukkan nama kota domisili atau profesi, lalu klik <strong>Cari</strong>.</em>' +
-        '</div>';
-    }
-
-    function eksekusiCariSaudara() {
-      var kota = document.getElementById('inputCariKota').value.trim();
-      var profesi = document.getElementById('inputCariProfesi').value.trim();
-      var loading = document.getElementById('loadingCariSaudara');
-      var wadah = document.getElementById('hasilPencarianSaudara');
-      var counter = document.getElementById('jumlahHasilCari');
-
-      if (!kota && !profesi) {
-        showFeedback('Silakan ketik minimal nama Kota atau Profesi yang dicari!', 'warning');
-        return;
-      }
-
-      loading.style.display = 'block';
-      wadah.innerHTML = '';
-      counter.style.display = 'none';
-
-      // Panggilan via API GET
-      fetch(SCRIPT_API_URL + "?action=search&kota=" + encodeURIComponent(kota) + "&profesi=" + encodeURIComponent(profesi))
-        .then(function(res) {
-          return res.json();
-        })
-        .then(function(res) {
-          loading.style.display = 'none';
-          if (res && res.status === 'success') {
-            renderHasilPencarianModal(res.results || []);
-          } else {
-            wadah.innerHTML = '<div class="col-12 text-center text-danger py-4">Gagal menelusuri data: ' + (res ? res.message : 'Kesalahan server') + '</div>';
-          }
-        })
-        .catch(function(err) {
-          loading.style.display = 'none';
-          // Fallback pencarian data lokal jika koneksi terputus
-          var cFilter = kota.toLowerCase();
-          var pFilter = profesi.toLowerCase();
-
-          var matches = (db.anggota || []).filter(function(m) {
-            var dom = ((m.alamat_ringkas || '') + ' ' + (m.alamat_lengkap || '')).toLowerCase();
-            var prof = ((m.pekerjaan || '') + ' ' + (m.bisnis || '')).toLowerCase();
-            var matchC = !cFilter || dom.indexOf(cFilter) !== -1;
-            var matchP = !pFilter || prof.indexOf(pFilter) !== -1;
-            return matchC && matchP;
-          });
-
-          renderHasilPencarianModal(matches);
-        });
-    }
-
-    function renderHasilPencarianModal(data) {
-      var wadah = document.getElementById('hasilPencarianSaudara');
-      var counter = document.getElementById('jumlahHasilCari');
-
-      if (!data || data.length === 0) {
-        if (counter) counter.style.display = 'none';
-        wadah.innerHTML = '<div class="col-12 text-center text-muted py-5">' +
-          '<i class="bi bi-person-x fs-1 text-secondary opacity-50 d-block mb-2"></i>' +
-          '<h6 class="fw-bold mb-1">Tidak Ditemukan Saudara yang Cocok</h6>' +
-          '<small>Coba gunakan kata kunci kota atau profesi yang lebih umum.</small>' +
-        '</div>';
-        return;
-      }
-
-      if (counter) {
-        counter.innerText = 'Ditemukan ' + data.length + ' saudara yang sesuai:';
-        counter.style.display = 'block';
-      }
-
-      var html = '';
-      for (var i = 0; i < data.length; i++) {
-        var item = data[i];
-        var foto = item.foto_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200';
-        var domisili = item.alamat_ringkas || item.alamat_lengkap || '-';
-        var pekerjaan = item.pekerjaan || item.bisnis || '-';
-        var telepon = (item.telepon && item.telepon !== '-') ? String(item.telepon) : '';
-        var cleanTelp = telepon.replace(/[^0-9]/g, '');
-
-        var waButtonHtml = '';
-        if (cleanTelp) {
-          waButtonHtml = '<div class="mt-2">' +
-            '<a href="https://wa.me/' + cleanTelp + '" target="_blank" class="btn btn-xs btn-outline-success py-0 px-2 rounded-pill small" style="font-size: 0.75rem;">' +
-            '<i class="bi bi-whatsapp me-1"></i>WhatsApp</a>' +
-            '</div>';
-        }
-
-        html += '<div class="col-md-6">' +
-          '<div class="card p-3 h-100 border shadow-sm rounded-4" style="background: #ffffff;">' +
-            '<div class="d-flex align-items-center gap-3">' +
-              '<img src="' + foto + '" alt="' + item.nama + '" ' +
-                   'class="rounded-circle object-fit-cover border border-2 border-success" ' +
-                   'style="width: 62px; height: 62px; min-width: 62px;" ' +
-                   'onerror="this.src=\'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200\';">' +
-              '<div class="overflow-hidden w-100">' +
-                '<h6 class="mb-1 fw-bold text-dark text-truncate">' + item.nama + '</h6>' +
-                '<span class="badge mb-1" style="background-color: #d8f3dc; color: #1b4332; font-weight: 600; font-size: 0.72rem;">' +
-                  'Generasi ' + (item.generasi || '-') +
-                '</span>' +
-                '<div class="small text-muted text-truncate"><i class="bi bi-geo-alt-fill text-danger me-1"></i>' + domisili + '</div>' +
-                '<div class="small text-muted text-truncate"><i class="bi bi-briefcase-fill text-primary me-1"></i>' + pekerjaan + '</div>' +
-                waButtonHtml +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }
-
-      wadah.innerHTML = html;
-    }
-
-    // AUTO RESTORE SESSION SAAT HALAMAN DIBUKA
-    window.addEventListener('load', function() {
-      var btn = document.getElementById('btnLogin');
+    window.addEventListener('load', () => {
+      const btn = document.getElementById('btnLogin');
       if (btn) {
         btn.onclick = executeLogin;
       }
 
-      var saved = getItemSafe('trah_user');
+      const saved = getItemSafe('trah_user');
       if (saved) {
         try {
-          var u = JSON.parse(saved);
+          const u = JSON.parse(saved);
           onLoginSuccess(u);
         } catch (e) {
           logoutUser();
